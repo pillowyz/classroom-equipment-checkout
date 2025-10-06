@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Checkout - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Equipment Checkout System</h1>
+            <div class="user-info">
+                <span id="user-name">Welcome, Student</span>
+                <button onclick="handleLogout()" class="btn btn-small">Logout</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div id="message" class="message hidden"></div>
+        
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('browse')">Browse Equipment</button>
+            <button class="tab-btn" onclick="showTab('checkout')">Checkout</button>
+            <button class="tab-btn" onclick="showTab('my-items')">My Items</button>
+        </div>
+        
+        <!-- Browse Equipment Tab -->
+        <div id="browse-tab" class="tab-content active">
+            <h2>Available Equipment</h2>
+            <table id="equipment-table">
+                <thead>
+                    <tr>
+                        <th>Device Name</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Last Checked Out</th>
+                    </tr>
+                </thead>
+                <tbody id="equipment-list">
+                    <tr>
+                        <td colspan="4" class="loading">Loading equipment...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Checkout Tab -->
+        <div id="checkout-tab" class="tab-content">
+            <h2>Checkout Equipment</h2>
+            <div class="form-box">
+                <div class="form-group">
+                    <label>Select Equipment</label>
+                    <select id="equipment-select">
+                        <option value="">-- Select Equipment --</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="student-name" placeholder="Enter your full name" required>
+                </div>
+                
+                <button onclick="checkoutEquipment()" class="btn btn-primary">Checkout Equipment</button>
+            </div>
+        </div>
+        
+        <!-- My Items Tab -->
+        <div id="my-items-tab" class="tab-content">
+            <h2>My Checked Out Items</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Device Name</th>
+                        <th>Type</th>
+                        <th>Checked Out On</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="my-items-list">
+                    <tr>
+                        <td colspan="4" class="loading">Loading your items...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/equipment.js"></script>
+</body>
+</html>
