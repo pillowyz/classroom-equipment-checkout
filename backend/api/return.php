@@ -6,35 +6,53 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 require_once '../config/database.php';
 
+session_start();
+
+// Get the posted data
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->device_id)) {
+// Log what we received for debugging
+error_log("Return request data: " . print_r($data, true));
+
+if (!empty($data->transaction_id)) {
+    
     $database = new Database();
     $db = $database->getConnection();
     
-    $query = "UPDATE devices SET 
-              status = 'Available',
-              checked_out_by = NULL
-              WHERE device_id = :device_id";
+    // Update transaction with return date (trigger will update device status)
+    $query = "UPDATE transactions 
+              SET actual_return_date = NOW() 
+              WHERE transaction_id = :transaction_id 
+              AND actual_return_date IS NULL";
     
     $stmt = $db->prepare($query);
-    $stmt->bindParam(':device_id', $data->device_id);
+    $stmt->bindParam(':transaction_id', $data->transaction_id);
     
     if ($stmt->execute()) {
-        echo json_encode([
-            "success" => true,
-            "message" => "Equipment returned successfully"
-        ]);
+        if ($stmt->rowCount() > 0) {
+            echo json_encode([
+                "success" => true,
+                "message" => "Equipment returned successfully"
+            ]);
+        } else {
+            echo json_encode([
+                "success" => false,
+                "message" => "Transaction not found or already returned"
+            ]);
+        }
     } else {
         echo json_encode([
             "success" => false,
-            "message" => "Failed to return equipment"
+            "message" => "Failed to update transaction"
         ]);
     }
 } else {
+    // Log the error
+    error_log("Missing transaction_id. Received: " . json_encode($data));
+    
     echo json_encode([
         "success" => false,
-        "message" => "Device ID is required"
+        "message" => "Transaction ID is required. Received: " . json_encode($data)
     ]);
 }
 ?>

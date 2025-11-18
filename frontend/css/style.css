@@ -272,6 +272,16 @@ tbody tr:hover {
     color: #991b1b;
 }
 
+.status-checked-out {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status-unavailable {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
 /* Utilities */
 .hidden {
     display: none !important;
