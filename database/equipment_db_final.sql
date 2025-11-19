@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-@@ -0,0 +1,165 @@
-=======
->>>>>>> bd9146eee64c3a9779ecd7526149c0518b3b2886
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -100,26 +96,16 @@ INSERT INTO `transactions` (`transaction_id`, `student_id`, `device_id`, `quanti
 -- Triggers `transactions`
 --
 DELIMITER $$
-<<<<<<< HEAD
 CREATE TRIGGER `after_transaction_insert` AFTER INSERT ON `transactions` FOR EACH ROW BEGIN
     UPDATE devices
-    SET status = 'Checked Out',
+    SET status = 'Unavailable',
         last_checked_out = NOW(),
         checked_out_by = NEW.student_id
     WHERE device_id = NEW.device_id;
-=======
-CREATE TRIGGER `after_transaction_insert` AFTER INSERT ON `transactions` FOR EACH ROW BEGIN
-    UPDATE devices
-    SET status = 'Checked Out',
-        last_checked_out = NOW(),
-        checked_out_by = NEW.student_id
-    WHERE device_id = NEW.device_id;
->>>>>>> bd9146eee64c3a9779ecd7526149c0518b3b2886
-END
-$$
+    END
+    $$
 DELIMITER ;
 DELIMITER $$
-<<<<<<< HEAD
 CREATE TRIGGER `after_transaction_update` AFTER UPDATE ON `transactions` FOR EACH ROW BEGIN
     -- Only act if actual_return_date is newly set
     IF NEW.actual_return_date IS NOT NULL AND OLD.actual_return_date IS NULL THEN
@@ -128,16 +114,6 @@ CREATE TRIGGER `after_transaction_update` AFTER UPDATE ON `transactions` FOR EAC
             checked_out_by = NULL
         WHERE device_id = NEW.device_id;
     END IF;
-=======
-CREATE TRIGGER `after_transaction_update` AFTER UPDATE ON `transactions` FOR EACH ROW BEGIN
-    -- Only act if actual_return_date is newly set
-    IF NEW.actual_return_date IS NOT NULL AND OLD.actual_return_date IS NULL THEN
-        UPDATE devices
-        SET status = 'Available',       -- mark it available again
-            checked_out_by = NULL
-        WHERE device_id = NEW.device_id;
-    END IF;
->>>>>>> bd9146eee64c3a9779ecd7526149c0518b3b2886
 END
 $$
 DELIMITER ;
@@ -186,8 +162,6 @@ COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-<<<<<<< HEAD
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-=======
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
->>>>>>> bd9146eee64c3a9779ecd7526149c0518b3b2886
+
